@@ -107,6 +107,10 @@ client.connect((err) => {
       })
   });
 
+  app.get('/', (req, res)=>{
+    res.send('Hurry! heroku is working');
+  })
+
 });
 
 app.listen(process.env.PORT || port);
