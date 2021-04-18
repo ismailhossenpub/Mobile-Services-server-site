@@ -14,7 +14,7 @@ app.use(cors());
 const port = 5500;
 
 app.get("/", (req, res) => {
-  res.send("Mobile Service");
+  res.send("Mobile Service heroku working");
 });
 
 const client = new MongoClient(uri, {
@@ -107,9 +107,6 @@ client.connect((err) => {
       })
   });
 
-  app.get('/', (req, res)=>{
-    res.send('Hurry! heroku is working');
-  })
 
 });
 
