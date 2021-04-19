@@ -28,21 +28,24 @@ client.connect((err) => {
   const emailCollection = client.db("MobileServices").collection("emails");
 
 //Admin part
-  app.get("/isAdmin", (req, res) => {
+
+app.post("/makeAdmin", (req, res) => {
+  const newAdmin = req.body;
+  emailCollection.insertOne(newAdmin)
+  .then((result) => {
+    res.send(result.insertedCount > 0);
+  });
+});
+  app.post("/isAdmin", (req, res) => {
     const email = req.body.email;
     console.log("Email",email);
     emailCollection.find({email: email})
-    .toArray((err, admins) => {
-      res.send(admins.length > 0);
+    .toArray((err, items) => {
+      res.send(items.length > 0);
     });
   });
 
-  app.post("/makeAdmin", (req, res) => {
-    const newAdmin = req.body;
-    emailCollection.insertOne(newAdmin).then((result) => {
-      res.send(result.insertedCount > 0);
-    });
-  });
+ 
 
 // Service part
 //Write service
@@ -96,6 +99,12 @@ client.connect((err) => {
       res.send(documents);
     });
   });
+//All orders
+app.get("/getAllOrder", (req, res) => {
+  ordersCollection.find().toArray((err, items) => {
+    res.send(items);
+  });
+});
 
   app.delete("/deleteBook/:id", (req, res) => {
     const id = ObjectID(req.params.id);
