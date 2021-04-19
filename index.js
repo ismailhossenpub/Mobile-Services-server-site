@@ -27,57 +27,51 @@ client.connect((err) => {
   const ordersCollection = client.db("MobileServices").collection("orders");
   const emailCollection = client.db("MobileServices").collection("emails");
 
-//Admin part
+  //Admin part
 
-app.post("/makeAdmin", (req, res) => {
-  const newAdmin = req.body;
-  emailCollection.insertOne(newAdmin)
-  .then((result) => {
-    res.send(result.insertedCount > 0);
+  app.post("/makeAdmin", (req, res) => {
+    const newAdmin = req.body;
+    emailCollection.insertOne(newAdmin).then((result) => {
+      res.send(result.insertedCount > 0);
+    });
   });
-});
   app.post("/isAdmin", (req, res) => {
     const email = req.body.email;
-    console.log("Email",email);
-    emailCollection.find({email: email})
-    .toArray((err, items) => {
+    console.log("Email", email);
+    emailCollection.find({ email: email }).toArray((err, items) => {
       res.send(items.length > 0);
     });
   });
 
- 
-
-// Service part
-//Write service
+  // Service part
+  //Write service
   app.post("/addService", (req, res) => {
     const newService = req.body;
     serviceCollection.insertOne(newService).then((result) => {
       res.send(result.insertedCount > 0);
     });
   });
-//Read service
+  //Read service
   app.get("/service", (req, res) => {
     serviceCollection.find().toArray((err, items) => {
       res.send(items);
     });
   });
 
-
-// Review part
-//Write Review
+  // Review part
+  //Write Review
   app.post("/addReview", (req, res) => {
     const newReview = req.body;
     reviewCollection.insertOne(newReview).then((result) => {
       res.send(result.insertedCount > 0);
     });
   });
-//Read Review
+  //Read Review
   app.get("/review", (req, res) => {
     reviewCollection.find().toArray((err, items) => {
       res.send(items);
     });
   });
-  
 
   //Read by id
   app.get("/book/:id", (req, res) => {
@@ -95,28 +89,26 @@ app.post("/makeAdmin", (req, res) => {
   });
 
   app.get("/getOrder", (req, res) => {
-    ordersCollection.find({ email: req.query.email }).toArray((err, documents) => {
-      res.send(documents);
+    ordersCollection
+      .find({ email: req.query.email })
+      .toArray((err, documents) => {
+        res.send(documents);
+      });
+  });
+  //All orders
+  app.get("/getAllOrder", (req, res) => {
+    ordersCollection.find().toArray((err, items) => {
+      res.send(items);
     });
   });
-//All orders
-app.get("/getAllOrder", (req, res) => {
-  ordersCollection.find().toArray((err, items) => {
-    res.send(items);
-  });
-});
 
   app.delete("/deleteBook/:id", (req, res) => {
     const id = ObjectID(req.params.id);
     console.log("delete this", id);
-    serviceCollection
-      .deleteOne({ _id: id })
-      .then(result =>{
-        res.send(result.deletedCount > 0);
-      })
+    serviceCollection.deleteOne({ _id: id }).then((result) => {
+      res.send(result.deletedCount > 0);
+    });
   });
-
-
 });
 
 app.listen(process.env.PORT || port);
