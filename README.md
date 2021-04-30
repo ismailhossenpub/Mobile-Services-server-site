@@ -1,5 +1,5 @@
 # My Project
-**I am create a "Books Store" website(uses react router with firebase and mongodb database).It has two part:**
+**I am create a "Mobile Services" website(uses react router with firebase and mongodb database).It has two part:**
 1. Client site
 2. Server site
 
